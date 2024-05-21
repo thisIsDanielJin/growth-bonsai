@@ -8,6 +8,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      scale: {
+        "-100": "-1",
+      },
+
+      height: {
+        "screen-minus-32": "calc(100vh - 8rem)",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -15,6 +22,10 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+
+  daisyui: {
+    themes: ["lemonade"],
+  },
 };
 export default config;
