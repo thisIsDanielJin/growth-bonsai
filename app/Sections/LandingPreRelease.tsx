@@ -1,7 +1,43 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
 
 export const LandingPreRelease = () => {
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const handleSignUp = async () => {
+    if (userName === "" || userEmail === "") {
+      alert("Please fill in all the fields");
+    } else {
+      setLoading(true);
+      try {
+        const response = await fetch("/api/sendToWaitingList", {
+          method: "POST",
+          body: JSON.stringify({
+            userName: userName,
+            userEmail: userEmail,
+          }),
+        });
+
+        if (response.ok) {
+          setMessage("Successfully signed up!");
+          setUserName("");
+          setUserEmail("");
+        } else {
+          setMessage("Failed to sign up. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error signing up:", error);
+        setMessage("An error occurred. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   return (
     <div className=" h-screen-minus-32 w-screen bg-[#F8FDEF] ">
       <div className="w-full h-full px-32 py-8 flex flex-row">
@@ -28,16 +64,24 @@ export const LandingPreRelease = () => {
                 type="text"
                 placeholder="Your name"
                 className="input w-3/4 bg-white border border-gray-300 text-lg"
+                onChange={(e) => {
+                  setUserName(e.target.value);
+                }}
               />
               <input
                 type="text"
                 placeholder="Your email address"
                 className="input w-3/4 bg-white border border-gray-300 text-lg"
+                onChange={(e) => {
+                  setUserEmail(e.target.value);
+                }}
               />
 
               <div className="flex">
-                <div className="btn btn-accent w-3/4">
-                  <p className="font-bold text-xl">{"I'm in"}</p>
+                <div className="btn btn-accent w-3/4" onClick={handleSignUp}>
+                  <p className="font-bold text-xl">
+                    {loading ? "Submitting..." : "I'm in"}
+                  </p>
                 </div>
                 <div className="rotate-[12deg] ml-3">
                   <p className="font-light text-xl text-nowrap">
@@ -53,6 +97,9 @@ export const LandingPreRelease = () => {
                   />
                 </div>
               </div>
+              {message && (
+                <p className="text-lg mt-4 text-black-600">{message}</p>
+              )}
             </div>
           </div>
         </div>

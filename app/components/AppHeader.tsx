@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
-import { AuthButton } from "./AuthButton";
 import Image from "next/image";
-export const Header = () => {
+import { AuthButton } from "./AuthButton";
+
+export const AppHeader = () => {
   return (
     <div className="sticky top-0 z-50 w-full h-24 bg-primary">
       <div className="relative w-full h-full px-32 flex items-center justify-between">
@@ -20,9 +21,8 @@ export const Header = () => {
         </div>
 
         <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-row items-center space-x-10 font-medium text-lg">
-          <p>Home</p>
-          <p>About</p>
-          <p>Contact</p>
+          <p>GrowthTracker</p>
+          <p>Profile</p>
         </div>
 
         <div>
