@@ -20,9 +20,9 @@ export const AppHeader = () => {
           </div>
         </div>
 
-        <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-row items-center space-x-10 font-medium text-lg">
-          <p>GrowthTracker</p>
-          <p>Profile</p>
+        <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-row items-center space-x-10 font-medium text-lg ">
+          <p className="hover:underline">GrowthTracker</p>
+          <p className="hover:underline">Profile</p>
         </div>
 
         <div>
