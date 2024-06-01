@@ -10,7 +10,7 @@ interface User {
   email: string;
 }
 
-const authOptions: AuthOptions = {
+const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET ?? "",
   providers: [
     GoogleProfile({
@@ -97,8 +97,6 @@ const authOptions: AuthOptions = {
       return baseUrl + "/app";
     },
   },
-};
-
-const handler = NextAuth(authOptions);
+});
 
 export { handler as GET, handler as POST };
