@@ -13,7 +13,6 @@ const options = {
   },
 };
 
-let client;
 let clientPromise: Promise<MongoClient>;
 
 clientPromise = new MongoClient(uri, options).connect();
