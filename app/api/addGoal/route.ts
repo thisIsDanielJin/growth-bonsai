@@ -10,9 +10,7 @@ export async function POST(request: NextRequest) {
     const progressTrackers = db.collection("progressTrackers");
 
     const { userId, progressTrackerId, description } = await request.json();
-    console.log(userId, "userID");
-    console.log(progressTrackerId, "progressTrackerId");
-    console.log(description, "description");
+
     if (!userId || !progressTrackerId || !description) {
       return NextResponse.json(
         { message: "Missing required fields" },

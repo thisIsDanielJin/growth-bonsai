@@ -58,7 +58,7 @@ export const GoalTracker = () => {
     <div className="h-full flex flex-col px-5">
       <div className="h-16 flex justify-between items-center my-5">
         <div className="flex-grow text-start">
-          <p className="font-bold text-xl">Current Streak: 10 days</p>
+          <p className="font-bold text-xl">Longest Streak: 10 days</p>
         </div>
         <button className="btn btn-accent p-2">
           <Image src="/icons/edit.svg" alt="editIcon" width={30} height={30} />
@@ -70,6 +70,7 @@ export const GoalTracker = () => {
             key={goal._id}
             goal={goal.description}
             streak={goal.check_history.length}
+            _id={goal._id}
           />
         ))}
       </div>

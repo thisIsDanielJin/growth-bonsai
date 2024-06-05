@@ -1,12 +1,39 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 interface SingleGoalProps {
   goal: string;
   streak: number;
+  _id: string;
 }
 
-export const SingleGoal = ({ goal, streak }: SingleGoalProps) => {
+export const SingleGoal = ({ goal, streak, _id }: SingleGoalProps) => {
+  const [todayChecked, setTodayChecked] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchGoal = async () => {
+      try {
+        const response = await fetch(`/api/checkGoalChecked/${_id}`);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const text = await response.text();
+        const data = text ? JSON.parse(text) : {};
+
+        if (data && data.today_checked !== undefined) {
+          setTodayChecked(data.today_checked);
+        }
+      } catch (error) {
+        console.error("Error fetching goal:", error);
+      }
+    };
+
+    fetchGoal();
+  }, [_id, todayChecked]);
+
   return (
     <div className="h-16 bg-secondary rounded-full flex items-center px-5 justify-between mb-3">
       <p className="text-lg">{goal}</p>
