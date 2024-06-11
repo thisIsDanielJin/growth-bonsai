@@ -26,7 +26,7 @@ export const GoalTracker = () => {
       modal.showModal();
     }
   };
-
+  console.log("goals", progressTracker?.goals);
   const handleAddGoal = async () => {
     if (progressTracker && newGoalDescription.trim() !== "") {
       const response = await fetch("/api/addGoal", {
@@ -71,6 +71,7 @@ export const GoalTracker = () => {
             goal={goal.description}
             streak={goal.check_history.length}
             _id={goal._id}
+            istodayChecked={goal.today_checked}
           />
         ))}
       </div>
