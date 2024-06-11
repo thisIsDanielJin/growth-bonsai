@@ -11,15 +11,28 @@ export async function POST(req: any) {
       return NextResponse.json({ error: "Missing goal id" }, { status: 400 });
     }
 
-    const { today_checked } = await req.json();
+    const { today_checked, date } = await req.json();
+
+    if (typeof today_checked !== "boolean" || !date) {
+      return NextResponse.json({ error: "Invalid input" }, { status: 400 });
+    }
 
     const client = await clientPromise;
     const database = client.db("Application");
     const collection = database.collection("binaryGoals");
 
+    // Update today_checked and add the date to check_history if today_checked is true
+    const update: any = {
+      $set: { today_checked },
+    };
+
+    if (today_checked) {
+      update.$push = { check_history: new Date(date) };
+    }
+
     const updateResult = await collection.updateOne(
       { _id: new ObjectId(id) },
-      { $set: { today_checked } }
+      update
     );
 
     if (updateResult.matchedCount === 0) {

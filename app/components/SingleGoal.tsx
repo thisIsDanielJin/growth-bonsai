@@ -16,6 +16,7 @@ export const SingleGoal = ({
   istodayChecked,
 }: SingleGoalProps) => {
   const [todayChecked, setTodayChecked] = useState<boolean>(istodayChecked);
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchGoal = async () => {
@@ -40,35 +41,48 @@ export const SingleGoal = ({
   }, [_id]);
 
   const handleCheckboxChange = async () => {
-    const newCheckedStatus = !todayChecked;
-    setTodayChecked(newCheckedStatus);
+    setIsUpdating(true);
 
     try {
+      const currentDate = new Date();
+      const dateTwoHoursLater = new Date(
+        currentDate.getTime() + 2 * 60 * 60 * 1000
+      ); // Add 2 hours
+
       const response = await fetch(`/api/updateGoal/?id=${_id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ today_checked: newCheckedStatus }),
+        body: JSON.stringify({
+          today_checked: !todayChecked,
+          date: dateTwoHoursLater.toISOString(),
+        }),
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const result = await response.json();
+      if (result.success) {
+        setTodayChecked(!todayChecked);
+      }
     } catch (error) {
       console.error("Error updating goal:", error);
-      // Optionally, revert the state if the update fails
-      setTodayChecked(!newCheckedStatus);
+    } finally {
+      setIsUpdating(false);
     }
   };
 
   return (
     <div className="h-16 bg-secondary rounded-full flex items-center px-5 justify-between mb-3">
-      <p className="text-lg">{goal}</p>
+      <p className="text-xl">{goal}</p>
       <div className="flex flex-row space-x-5 items-center">
         <input
           type="checkbox"
           checked={todayChecked}
+          disabled={todayChecked}
           className="checkbox"
           onChange={handleCheckboxChange}
         />

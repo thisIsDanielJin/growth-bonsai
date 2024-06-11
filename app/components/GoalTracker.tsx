@@ -5,6 +5,7 @@ import { SingleGoal } from "./SingleGoal";
 import { useSession } from "next-auth/react";
 import useProgressTracker from "@/hooks/useProgressTracker";
 import { Goal } from "@/types/types";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const GoalTracker = () => {
   const { data: session } = useSession();
@@ -26,7 +27,8 @@ export const GoalTracker = () => {
       modal.showModal();
     }
   };
-  console.log("goals", progressTracker?.goals);
+  //console.log("goals", progressTracker?.goals);
+
   const handleAddGoal = async () => {
     if (progressTracker && newGoalDescription.trim() !== "") {
       const response = await fetch("/api/addGoal", {
@@ -53,6 +55,17 @@ export const GoalTracker = () => {
       }
     }
   };
+
+  if (progressTracker?.goals === undefined) {
+    return (
+      <div className="h-full flex flex-col px-5 items-center justify-center">
+        <div className="flex items-center">
+          <p className="text-3xl mr-10">Loading Goals ...</p>
+          <CircularProgress color="success" size={70} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full flex flex-col px-5">
