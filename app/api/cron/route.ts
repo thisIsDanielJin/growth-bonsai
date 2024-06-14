@@ -12,6 +12,7 @@ export async function GET() {
     );
 
     client.close();
+    console.log("Successfully updated binaryGoals collection");
     return NextResponse.json({
       message: "Successfully updated binaryGoals collection",
       modifiedCount: updateResult.modifiedCount,
