@@ -2,6 +2,7 @@ import clientPromise from "@/utils/connectMongodb";
 import { NextResponse } from "next/server";
 
 export async function GET() {
+  console.log("Cron job started");
   try {
     const client = await clientPromise;
     const db = client.db("Application");
