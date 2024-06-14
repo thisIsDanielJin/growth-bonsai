@@ -1,8 +1,6 @@
 import clientPromise from "@/utils/connectMongodb";
 import { NextResponse } from "next/server";
 
-export const dynamic = "force-dynamic";
-
 export async function GET() {
   try {
     const client = await clientPromise;
@@ -13,7 +11,6 @@ export async function GET() {
       { $set: { today_checked: false } }
     );
 
-    client.close();
     console.log("Successfully updated binaryGoals collection");
     return NextResponse.json({
       message: "Successfully updated binaryGoals collection",
